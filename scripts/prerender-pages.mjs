@@ -133,6 +133,7 @@ function shell(page) {
     .site-nav a { color: var(--accent); }
   </style>
   ${faq}
+  <script src="https://ref.web-free.site/r.js" defer></script>
 </head>
 <body>
   <header class="topbar">
