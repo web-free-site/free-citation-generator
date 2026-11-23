@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/build.mjs",
+    "build": "node scripts/build.mjs && node scripts/inject-hub-legal.mjs",
     "preview": "npx --yes serve dist -p 8788",
     "test": "node scripts/verify.mjs"
   },
