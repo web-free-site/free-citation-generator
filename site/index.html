@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Free Citation Generator — create APA 7, MLA 9, Chicago, IEEE, Vancouver and ABNT citations in your browser. Paste a DOI, ISBN, URL or title. BibTeX and RIS export. No signup.">
+  <meta name="theme-color" content="#4f46e5">
+  <meta name="author" content="Gabriel Tonatiu Andrade (CiteFast)">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <title>Free Citation Generator — APA, MLA, Chicago &amp; BibTeX</title>
+  <link rel="canonical" href="https://free-citation-generator.web-free.site/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Free Citation Generator">
+  <meta property="og:title" content="Free Citation Generator — APA, MLA, Chicago">
+  <meta property="og:description" content="Paste a DOI, ISBN, URL or title and get a formatted citation. 100% in your browser. APA 7 default. BibTeX export.">
+  <meta property="og:url" content="https://free-citation-generator.web-free.site/">
+  <meta property="og:image" content="https://free-citation-generator.web-free.site/assets/og-image.svg">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free Citation Generator">
+  <meta name="twitter:description" content="APA, MLA, Chicago citations with BibTeX export. Browser-only, no account.">
+  <meta name="twitter:image" content="https://free-citation-generator.web-free.site/assets/og-image.svg">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <link rel="manifest" href="/site.webmanifest">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Free Citation Generator",
+    "url": "https://free-citation-generator.web-free.site/",
+    "description": "Free academic citation generator for APA 7, MLA 9, Chicago, IEEE, Vancouver and ABNT in the browser.",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "Any (web browser)",
+    "inLanguage": "en",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "featureList": [
+      "APA 7, MLA 9, Chicago, IEEE, Vancouver, ABNT",
+      "DOI, ISBN, URL and title lookup",
+      "BibTeX, RIS and CSL-JSON export",
+      "Manual entry works offline"
+    ],
+    "isAccessibleForFree": true
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "Is the citation generator free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. It runs in your browser with no account required." }},
+      { "@type": "Question", "name": "Which styles are supported?", "acceptedAnswer": { "@type": "Answer", "text": "APA 7 (default), MLA 9, Chicago, IEEE, Vancouver and ABNT." }},
+      { "@type": "Question", "name": "Can I export BibTeX?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Use the BibTeX button on any generated citation." }}
+    ]
+  }
+  </script>
+  <link rel="preconnect" href="https://doi.org" crossorigin>
+  <link rel="preconnect" href="https://api.crossref.org" crossorigin>
+  <link rel="preconnect" href="https://api.openalex.org" crossorigin>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <style>
+    .site-nav { display:flex; flex-wrap:wrap; gap:10px; margin:0 0 1rem; font-size:14px; }
+    .site-nav a { color: var(--accent); }
+    #langSelect { display: none; }
+    label:has(#langSelect) { display: none !important; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <a class="brand" href="/">
+        <span class="brand__mark" aria-hidden="true">❝</span>
+        <span class="brand__name">Free <b>Citation</b></span>
+      </a>
+      <div class="topbar__controls">
+        <label class="select">
+          <span class="select__label" data-i18n="langLabel">Language</span>
+          <select id="langSelect" aria-label="Language"></select>
+        </label>
+        <label class="select">
+          <span class="select__label" data-i18n="styleLabel">Style</span>
+          <select id="styleSelect" aria-label="Citation style"></select>
+        </label>
+        <button id="themeToggle" class="icon-btn icon-btn--ghost" data-i18n-title="themeTitle" title="Theme" aria-label="Theme">◐</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap main">
+    <nav class="site-nav" aria-label="Guides">
+      <a href="/apa-citation-generator/">APA</a>
+      <a href="/mla-citation-generator/">MLA</a>
+      <a href="/chicago-citation-generator/">Chicago</a>
+      <a href="/about/">About</a>
+      <a href="/privacy/">Privacy</a>
+    </nav>
+    <section class="hero">
+      <h1 class="hero__title" id="heroTitle">Your perfect citation in <span>3 seconds</span></h1>
+      <p class="hero__sub" id="heroSub" data-i18n="heroSub"></p>
+      <div class="searchbox">
+        <input id="heroInput" class="searchbox__input" type="text" autocomplete="off" spellcheck="false"
+          data-i18n-ph="searchPlaceholder" placeholder="Paste a DOI, ISBN, URL or title…" aria-label="Source data">
+        <button id="clearInput" class="searchbox__clear" data-i18n-title="clearTitle" title="Clear" aria-label="Clear">✕</button>
+      </div>
+      <div class="hero__meta">
+        <span id="typeChip" class="chip" hidden></span>
+        <span id="status" class="status status--idle"></span>
+      </div>
+      <p class="trust" id="trustLine">
+        <span class="trust__dot" aria-hidden="true">🔒</span>
+        <span data-i18n="trustLine"></span>
+      </p>
+      <div class="hero__cta">
+        <button id="bulkOpen" class="btn btn--ghost btn--bulk" data-i18n="bulkBtn">⚡ Bulk mode</button>
+      </div>
+      <div id="candidates" class="candidates" hidden></div>
+      <div class="manual">
+        <button id="manualToggle" class="manual__toggle" aria-expanded="false" aria-controls="manualBody">
+          <span data-i18n="manualToggle">or fill in the details manually</span> <span class="manual__chevron">▾</span>
+        </button>
+        <div id="manualBody" class="manual__body" hidden>
+          <label class="field field--wide">
+            <span data-i18n="manualTypeLabel">Document type</span>
+            <select id="manualType"></select>
+          </label>
+          <div id="manualFields" class="manual__grid"></div>
+          <button id="manualBuild" class="btn btn--primary" data-i18n="manualBuild">Generate citation</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="previewCard" class="preview is-empty" aria-live="polite">
+      <div class="preview__head">
+        <h2 data-i18n="previewHead">Preview</h2>
+        <span class="preview__style" id="previewStyleTag"></span>
+      </div>
+      <div id="previewText" class="preview__text"></div>
+      <div id="previewWarnings" class="preview__warnings" hidden></div>
+      <div id="previewActions" class="preview__actions" hidden>
+        <button class="btn btn--primary" data-act="copy" data-i18n="actCopy">Copy with formatting</button>
+        <button class="btn" data-act="copytext" data-i18n="actCopyText">Copy text</button>
+        <button class="btn" data-act="bibtex">BibTeX</button>
+        <button class="btn" data-act="ris">RIS</button>
+        <button class="btn" data-act="edit" data-i18n="actEdit">Edit</button>
+        <button class="btn btn--accent" data-act="add" data-i18n="actAdd">Add to my library</button>
+      </div>
+    </section>
+
+    <aside id="ad-native-slot" class="ad ad--inline" aria-label="Advertisement"></aside>
+
+    <section class="lib">
+      <div class="lib__head">
+        <h2><span data-i18n="libHead">My library</span> <span class="lib__count">(<span id="libCount">0</span>)</span></h2>
+        <div id="libraryTools" class="lib__tools" hidden>
+          <label class="select select--sm">
+            <span class="select__label" data-i18n="exportLabel">Export all</span>
+            <select id="exportAll" aria-label="Export library"></select>
+          </label>
+          <button id="clearLibrary" class="btn btn--ghost btn--sm" data-i18n="clearLib">Clear</button>
+        </div>
+      </div>
+      <p id="libraryEmpty" class="lib__empty" data-i18n="libEmpty"></p>
+      <ol id="library" class="lib__list"></ol>
+    </section>
+
+    <section class="faq">
+      <h2 class="faq__head" id="styleGuideHead" data-i18n="styleGuideHead">Which citation style should I use?</h2>
+      <p class="faq__intro" id="styleGuideIntro" data-i18n="styleGuideIntro"></p>
+      <div class="styleguide" id="styleGuideTable"></div>
+      <p class="faq__tip" id="styleGuideTip" data-i18n="styleGuideTip"></p>
+      <h2 class="faq__head" data-i18n="faqHead">Frequently asked questions</h2>
+      <div id="faqList" class="faq__list"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <p data-i18n="footerMain"></p>
+      <p class="footer__note" data-i18n="footerNote"></p>
+      <p class="footer__credit">
+        <span data-i18n="createdBy">Based on CiteFast by</span>
+        <a href="https://github.com/gabotonatiu/citefast" target="_blank" rel="noopener">Gabriel Tonatiu Andrade</a>
+        · <span data-i18n="openSource">MIT on</span>
+        <a class="gh-link" href="https://github.com/gabotonatiu/citefast" target="_blank" rel="noopener">GitHub</a>
+        · <a href="/about/">About</a>
+        · <a href="/privacy/" data-i18n="privacyLink">Privacy</a>
+        · <a href="/terms/">Terms</a>
+        · <a href="/contact/">Contact</a>
+        · <a href="https://web-free.site/?ref=citation-generator">web-free.site</a>
+      </p>
+    </div>
+  </footer>
+
+  <div id="bulkModal" class="modal" hidden>
+    <div class="modal__backdrop" data-bulk-close></div>
+    <div class="modal__box modal__box--bulk" role="dialog" aria-modal="true" aria-labelledby="bulkTitle">
+      <button class="modal__x" data-bulk-close aria-label="Close">✕</button>
+      <h2 id="bulkTitle" data-i18n="bulkTitle">Bulk mode</h2>
+      <p class="modal__sub" data-i18n="bulkSub"></p>
+      <p class="bulk__privacy" data-i18n="bulkPrivacy"></p>
+      <textarea id="bulkInput" class="bulk__input" rows="6" data-i18n-ph="bulkPastePh"></textarea>
+      <div class="bulk__controls">
+        <label class="btn btn--ghost bulk__file">
+          <span data-i18n="bulkChoose">Choose file</span>
+          <input id="bulkFile" type="file" accept=".pdf,.docx,.txt,.md,.bib,.ris,.csv" hidden>
+        </label>
+        <span id="bulkFileName" class="bulk__filename"></span>
+        <button id="bulkAnalyze" class="btn btn--primary" data-i18n="bulkAnalyze">Extract &amp; generate</button>
+      </div>
+      <p class="bulk__rigor"><span aria-hidden="true">🔬</span> <span data-i18n="bulkRigor"></span></p>
+      <div id="bulkStatus" class="bulk__status" hidden></div>
+      <div id="bulkResults" class="bulk__results"></div>
+      <div id="bulkFooter" class="bulk__footer" hidden>
+        <button id="bulkAddAll" class="btn btn--accent"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/i18n.js" defer></script>
+  <script src="assets/js/engine.js" defer></script>
+  <script src="assets/js/api.js" defer></script>
+  <script src="assets/js/bulk.js" defer></script>
+  <script src="assets/js/app.js" defer></script>
+  <script src="assets/js/ads-loader.js" defer></script>
+</body>
+</html>

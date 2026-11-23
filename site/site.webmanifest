@@ -1,0 +1,13 @@
+{
+  "name": "Free Citation Generator",
+  "short_name": "Citations",
+  "description": "APA, MLA and Chicago citations in your browser.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f14",
+  "theme_color": "#4f46e5",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "lang": "en"
+}

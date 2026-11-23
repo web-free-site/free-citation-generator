@@ -1,0 +1,10 @@
+AGENT_BRIEF.md
+wrangler.toml
+package.json
+package-lock.json
+.git/
+node_modules/
+site/
+scripts/
+worker.js
+README.md
